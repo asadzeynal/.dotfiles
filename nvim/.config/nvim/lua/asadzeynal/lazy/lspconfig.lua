@@ -39,18 +39,26 @@ return {
 		require('lspconfig').rust_analyzer.setup({})
 
 		local cmp = require('cmp')
+		local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
 		cmp.setup({
-				sources = {
-				{name = 'nvim_lsp'},
-				},
-				snippet = {
+			snippet = {
 				expand = function(args)
-				-- You need Neovim v0.10 to use vim.snippet
-				vim.snippet.expand(args.body)
+					require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
 				end,
-				},
-				mapping = cmp.mapping.preset.insert({}),
-				})
+			},
+			mapping = cmp.mapping.preset.insert({
+                ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+                ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+                ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+                ["<C-Space>"] = cmp.mapping.complete(),
+            }),
+            sources = cmp.config.sources({
+                { name = 'nvim_lsp' },
+                { name = 'luasnip' }, -- For luasnip users.
+            }, {
+                { name = 'buffer' },
+            })
+		})
 	end
 }
