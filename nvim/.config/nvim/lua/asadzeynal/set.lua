@@ -12,9 +12,9 @@ vim.opt.updatetime = 250
 vim.opt.timeoutlen = 350
 
 vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
-vim.opt.signcolumn = "yes"
+vim.opt.signcolumn = "auto"
 
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
@@ -28,4 +28,3 @@ vim.opt.hlsearch = false
 vim.opt.incsearch = true
 
 vim.opt.scrolloff = 8
-
