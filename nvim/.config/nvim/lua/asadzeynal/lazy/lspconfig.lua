@@ -88,6 +88,22 @@ return {
 				"stylua", -- Used to format Lua code
 			})
 
+			servers["pylsp"] = {
+				settings = {
+					pylsp = {
+						plugins = {
+							pydocstyle = { enabled = false },
+							pycodestyle = { enabled = false },
+							pyflakes = { enabled = false },
+							pyright = { enabled = false },
+							yapf = { enabled = false },
+
+							autopep8 = { enabled = false },
+						},
+					},
+				},
+			}
+
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 			require("mason-lspconfig").setup({
