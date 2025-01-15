@@ -1,11 +1,35 @@
 -- plugins/telescope.lua:
 return {
-	'nvim-telescope/telescope.nvim', tag = '0.1.8',
-	dependencies = { 'nvim-lua/plenary.nvim' },
+	"nvim-telescope/telescope.nvim",
+	tag = "0.1.8",
+	dependencies = {
+		"nvim-lua/plenary.nvim",
+		"nvim-telescope/telescope-live-grep-args.nvim",
+	},
 	config = function()
-		local builtin = require('telescope.builtin')
-		vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = 'Telescope find files' })
-		vim.keymap.set('n', '<C-p>', builtin.git_files, {})
-		vim.keymap.set('n', '<leader>sg', builtin.live_grep, {})
-	end
+		local telescope = require("telescope")
+		local lga_actions = require("telescope-live-grep-args.actions")
+		local builtin = require("telescope.builtin")
+
+		telescope.setup({
+			extensions = {
+				live_grep_args = {
+					auto_quoting = true,
+					mappings = {
+						i = {
+							["<C-k>"] = lga_actions.quote_prompt(),
+							["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob !*test* --iglob !*mock*" }),
+						},
+					},
+				},
+			},
+		})
+
+		vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "Telescope find files" })
+		vim.keymap.set("n", "<C-p>", builtin.git_files, {})
+		-- vim.keymap.set("n", "<leader>sg", builtin.live_grep, {})
+		vim.keymap.set("n", "<leader>sg", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
+
+		telescope.load_extension("live_grep_args")
+	end,
 }
