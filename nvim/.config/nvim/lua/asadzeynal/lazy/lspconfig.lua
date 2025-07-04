@@ -60,7 +60,15 @@ return {
 				end
 				vim.diagnostic.config({ signs = { text = diagnostic_signs } })
 			end
-
+			vim.diagnostic.config({
+				virtual_text = false,
+				virtual_lines = {
+					severity = {
+						min = vim.diagnostic.severity.WARN,
+					},
+					current_line = true,
+				},
+			})
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
