@@ -2,11 +2,7 @@ return {
 	{
 		"rebelot/kanagawa.nvim",
 		config = function()
-			require("kanagawa").setup({
-				theme = "wave",
-			})
-
-			vim.cmd("colorscheme kanagawa")
+			vim.cmd("colorscheme kanagawa-wave")
 		end,
 	},
 	{
