@@ -11,15 +11,26 @@ return {
 		local lga_actions = require("telescope-live-grep-args.actions")
 		local builtin = require("telescope.builtin")
 		local live_grep_args_shortcuts = require("telescope-live-grep-args.shortcuts")
+		local open_with_trouble = require("trouble.sources.telescope").open
 
 		telescope.setup({
+			defaults = {
+				cache_picker = {
+					num_pickers = 10,
+				},
+			},
 			extensions = {
 				live_grep_args = {
 					auto_quoting = true,
 					mappings = {
 						i = {
 							["<C-k>"] = lga_actions.quote_prompt(),
-							["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob !*test* --iglob !*mock*" }),
+							["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+
+							["<C-q>"] = open_with_trouble,
+						},
+						n = {
+							["<C-q>"] = open_with_trouble,
 						},
 					},
 				},
@@ -29,6 +40,8 @@ return {
 		vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "Telescope find files" })
 		vim.keymap.set("n", "<C-p>", builtin.git_files, {})
 		vim.keymap.set("n", "<leader>sg", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
+		vim.keymap.set("n", "<leader>sr", builtin.resume)
+		vim.keymap.set("n", "<leader>sp", builtin.pickers)
 		vim.keymap.set({ "x", "v" }, "<leader>sf", function()
 			live_grep_args_shortcuts.grep_visual_selection({ quote = false })
 		end)
