@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 DOTFILES="$HOME/.dotfiles"
-STOW_FOLDERS="nvim", "tmux"
+STOW_FOLDERS="nvim"
 
 pushd "$DOTFILES" || exit
 
