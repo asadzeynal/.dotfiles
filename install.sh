@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 DOTFILES="$HOME/.dotfiles"
-STOW_FOLDERS="nvim"
+STOW_FOLDERS="config"
 
 pushd "$DOTFILES" || exit
 

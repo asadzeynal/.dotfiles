@@ -7,3 +7,4 @@ This repository mirrors the home directory and uses [GNU Stow](https://www.gnu.o
     - ripgrep
     - unzip
     - nerd font
+    - delta pager
