@@ -6,7 +6,7 @@ local M = {
 	config = function()
 		require("nvim-treesitter.configs").setup({
 			-- A list of parser names, or "all" (the listed parsers MUST always be installed)
-			ensure_installed = { "rust", "go", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline", "regex" },
+			ensure_installed = { "go", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline", "regex" },
 
 			-- Install parsers synchronously (only applied to `ensure_installed`)
 			sync_install = false,
@@ -24,6 +24,10 @@ local M = {
 				-- Instead of true it can also be a list of languages
 				additional_vim_regex_highlighting = false,
 			},
+			--
+			-- add these to satisfy the TSConfig type:
+			modules = {}, -- internal; safe to leave empty
+			ignore_install = {}, -- list parsers to skip, keep empty if none
 		})
 	end,
 }

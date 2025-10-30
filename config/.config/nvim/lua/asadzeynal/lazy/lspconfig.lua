@@ -76,7 +76,6 @@ return {
 				gopls = {},
 				gofumpt = {},
 				golangci_lint_ls = {},
-				rust_analyzer = {},
 				lua_ls = {
 					settings = {
 						Lua = {
