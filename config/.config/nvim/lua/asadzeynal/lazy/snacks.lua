@@ -7,6 +7,11 @@ return {
 			"folke/trouble.nvim",
 		},
 		opts = function(_, opts)
+			local lazygit_opts = {}
+			local ok, local_opts = pcall(require, "asadzeynal.snacks_local")
+			if ok then
+				lazygit_opts = local_opts.lazygit or {}
+			end
 			return vim.tbl_deep_extend("force", opts or {}, {
 				gitbrowse = {
 					url_patterns = {
@@ -18,7 +23,7 @@ return {
 						},
 					},
 				},
-				lazygit = {},
+				lazygit = lazygit_opts,
 				notifier = { enabled = true },
 				terminal = {},
 				statuscolumn = {},
@@ -35,6 +40,7 @@ return {
 			})
 		end,
 		keys = {
+			{ "<leader>gl", function() Snacks.lazygit.log() end, desc = "LazyGit Log" },
 			{
 				"<leader>gb",
 				function()
