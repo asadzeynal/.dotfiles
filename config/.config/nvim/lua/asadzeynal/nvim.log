@@ -1,0 +1,4 @@
+WRN 2026-05-22T10:29:40.989 ?.67236    server_start:197: Failed to start server: operation not permitted: /var/folders/jk/zmc0zc4d09n8vw3t4h1mmczc0000gn/T/nvim.asad.zeynalov/LmcyUC/nvim.67236.0
+WRN 2026-05-22T10:29:45.199 ?.67255    server_start:197: Failed to start server: operation not permitted: /var/folders/jk/zmc0zc4d09n8vw3t4h1mmczc0000gn/T/nvim.asad.zeynalov/hgIZIR/nvim.67255.0
+WRN 2026-05-22T10:29:48.596 ?.67264    server_start:197: Failed to start server: operation not permitted: /var/folders/jk/zmc0zc4d09n8vw3t4h1mmczc0000gn/T/nvim.asad.zeynalov/XcwRkz/nvim.67264.0
+WRN 2026-05-25T14:57:13.305 ?.93069    server_start:197: Failed to start server: operation not permitted: /var/folders/jk/zmc0zc4d09n8vw3t4h1mmczc0000gn/T/nvim.asad.zeynalov/GYC2Sv/nvim.93069.0

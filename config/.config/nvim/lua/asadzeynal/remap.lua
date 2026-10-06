@@ -35,7 +35,7 @@ vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
 		vim.notify(
 			msg .. vim.fn.reg_recording(),
 			vim.log.levels.INFO,
-			{ title = "Macro", timeout = 10000, hide_from_history = false }
+			{ title = "Macro", timeout = 10000, history = true }
 		)
 	end,
 })
