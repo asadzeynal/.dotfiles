@@ -1,10 +1,11 @@
 return {
 	{
-		"AlexvZyl/nordic.nvim",
+		"EdenEast/nightfox.nvim",
 		lazy = false,
 		priority = 1000,
 		config = function()
-			require("nordic").load()
+			vim.opt.termguicolors = true
+			vim.cmd.colorscheme("carbonfox")
 		end,
 	},
 	{
