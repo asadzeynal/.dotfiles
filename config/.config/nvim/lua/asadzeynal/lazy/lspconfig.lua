@@ -23,14 +23,9 @@ return {
 			"hrsh7th/cmp-nvim-lsp",
 		},
 		config = function()
-			-- Add cmp_nvim_lsp capabilities settings to lspconfig
-			-- This should be executed before you configure any language server
-			local lspconfig_defaults = require("lspconfig").util.default_config
-			lspconfig_defaults.capabilities = vim.tbl_deep_extend(
-				"force",
-				lspconfig_defaults.capabilities,
-				require("cmp_nvim_lsp").default_capabilities()
-			)
+			vim.lsp.config("*", {
+				capabilities = require("cmp_nvim_lsp").default_capabilities(),
+			})
 
 			-- This is where you enable features that only work
 			-- if there is a language server active in the file
@@ -38,6 +33,13 @@ return {
 				desc = "LSP actions",
 				callback = function(event)
 					local opts = { buffer = event.buf }
+					local client = vim.lsp.get_client_by_id(event.data.client_id)
+					if client and client:supports_method("textDocument/inlayHint") then
+						vim.keymap.set("n", "<leader>uh", function()
+							local filter = { bufnr = event.buf }
+							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(filter), filter)
+						end, { buffer = event.buf, desc = "Toggle inlay hints" })
+					end
 
 					vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", opts)
 					vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
@@ -69,12 +71,24 @@ return {
 					current_line = true,
 				},
 			})
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
-
 			local servers = {
-				gopls = {},
-				gofumpt = {},
+				gopls = {
+					on_init = function(client)
+						-- Older gopls versions advertise tokens even when the setting is off.
+						client.server_capabilities.semanticTokensProvider = nil
+					end,
+					settings = {
+						gopls = {
+							usePlaceholders = true,
+							semanticTokens = false,
+							gofumpt = true,
+							hints = {
+								ignoredError = true,
+								constantValues = true,
+							},
+						},
+					},
+				},
 				golangci_lint_ls = {},
 				lua_ls = {
 					settings = {
@@ -89,11 +103,6 @@ return {
 			}
 
 			require("mason").setup()
-
-			local ensure_installed = vim.tbl_keys(servers or {})
-			vim.list_extend(ensure_installed, {
-				"stylua", -- Used to format Lua code
-			})
 
 			servers["pylsp"] = {
 				settings = {
@@ -111,17 +120,14 @@ return {
 				},
 			}
 
-			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+			for server_name, server in pairs(servers) do
+				vim.lsp.config(server_name, server)
+			end
 
-			require("mason-lspconfig").setup({
-				handlers = {
-					function(server_name)
-						local server = servers[server_name] or {}
-						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-						require("lspconfig")[server_name].setup(server)
-					end,
-				},
-			})
+			local ensure_installed = vim.tbl_keys(servers)
+			table.insert(ensure_installed, "stylua")
+			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+			require("mason-lspconfig").setup()
 		end,
 	},
 	{ -- Autoformat
@@ -141,6 +147,10 @@ return {
 		opts = {
 			notify_on_error = false,
 			format_on_save = function(bufnr)
+				if vim.bo[bufnr].filetype == "go" then
+					require("asadzeynal.go").organize_imports(bufnr)
+					return { timeout_ms = 2000, lsp_format = "prefer", name = "gopls" }
+				end
 				local disable_filetypes =
 					{ c = true, cpp = true, javascript = true, typescript = true, typescriptreact = true }
 				local lsp_format_opt

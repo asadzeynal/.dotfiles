@@ -1,11 +1,11 @@
 return {
 	{
-		"tinted-theming/tinted-vim",
+		"EdenEast/nightfox.nvim",
 		lazy = false,
 		priority = 1000,
 		config = function()
 			vim.opt.termguicolors = true
-			vim.cmd.colorscheme("base16-twilight")
+			vim.cmd.colorscheme("dawnfox")
 		end,
 	},
 	{
